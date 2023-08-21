@@ -40,25 +40,20 @@ const arrayDados = dataClear.map((e)=>{
     return objeto;
 });
 
-//const jsonArray = JSON.stringify(arrayDados);
-
-
-
 // Convertendo o array eventParamenters em uma string para a coluna na planilha
-const transformedData = arrayDados.map(item => ({
-  ...item,
-  eventParamenters: item.eventParamenters.join('\n')
-}));
+const transformedData = arrayDados.map(item => {
+    const eventParameters = item.eventParamenters || []; // Se eventParamenters for null, usamos um array vazio
+    return {
+      ...item,
+      eventParamenters: Array.isArray(eventParameters) ? eventParameters.join('\n') : ''
+    };
+});
 
 const worksheet = XLSX.utils.json_to_sheet(transformedData);
 const workbook = XLSX.utils.book_new();
 XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
 
-const outputPath = 'teste.xlsx';
+const outputPath = 'listaEventosGA4_fromGTM.xlsx';
 XLSX.writeFile(workbook, outputPath);
 
 console.log(`JSON data converted to Excel: ${outputPath}`);
-
-
-
-//console.log(jsonArray)
