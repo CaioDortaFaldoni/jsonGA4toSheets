@@ -1,4 +1,4 @@
-const jsonData = require('/Users/user/Documents/Projetos/UninterListaEventosGA4/jsonGA4toSheets/GA4-Uninter.json');
+const jsonData = require('/Users/user/Documents/Projetos/jsonGA4toSheets/ga4-fast.json');
 const fs = require('fs');
 const XLSX = require('xlsx');
 
@@ -6,6 +6,7 @@ const dataClear = jsonData.containerVersion.tag;
 let eventValue = null;
 let eventParameters = null;
 let listParameter = null;
+let userParameters = null;
 
 const arrayDados = dataClear.map((e)=>{
     const tagName = e.name;
@@ -32,20 +33,36 @@ const arrayDados = dataClear.map((e)=>{
         }
     }
 
+    //pegar os parametros do usuario da tag
+    for(const parameter of paran){
+        if (parameter.key === "userProperties") {
+            listParameter = parameter.list;
+            // map feito para entrar em cada objeto e montar name: value
+            userParameters = listParameter.map((p)=>{
+                return p.map[0].value + ": " +p.map[1].value;
+            })
+            break;
+        }
+    }
+
     const objeto = {
         'tagName': tagName,
         'eventName': eventValue,
-        'eventParamenters': eventParameters
+        'eventParameters': eventParameters,
+        'userParameters': userParameters
     }
     return objeto;
 });
 
 // Convertendo o array eventParamenters em uma string para a coluna na planilha
 const transformedData = arrayDados.map(item => {
-    const eventParameters = item.eventParamenters || []; // Se eventParamenters for null, usamos um array vazio
+    const eventParameters = item.eventParameters || []; // Se eventParamenters for null, usamos um array vazio
+    const userParameters = item.userParameters || []; // Se eventParamenters for null, usamos um array vazio
+
     return {
       ...item,
-      eventParamenters: Array.isArray(eventParameters) ? eventParameters.join('\n') : ''
+      eventParameters: Array.isArray(eventParameters) ? eventParameters.join('\n') : '',
+      userParameters: Array.isArray(userParameters) ? userParameters.join('\n') : ''
     };
 });
 
