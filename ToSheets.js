@@ -1,14 +1,14 @@
-const jsonData = require('/Users/user/Documents/Projetos/jsonGA4toSheets/ga4-fast.json');
+const jsonData = require('/Users/user/Documents/Projetos/jsonGA4toSheets/ga4-uninter2.json');
 const fs = require('fs');
 const XLSX = require('xlsx');
 
 const dataClear = jsonData.containerVersion.tag;
-let eventValue = null;
-let eventParameters = null;
-let listParameter = null;
-let userParameters = null;
 
 const arrayDados = dataClear.map((e)=>{
+    let eventValue = null;
+    let listParameter = null;
+    let userParameters = null;
+    let eventParameters = null;
     const tagName = e.name;
     const paran = e.parameter;
     
@@ -23,7 +23,7 @@ const arrayDados = dataClear.map((e)=>{
 
     //pegar os parametros da tag
     for(const parameter of paran){
-        if (parameter.key === "eventParameters") {
+        if (parameter.key === "eventSettingsTable") {
             listParameter = parameter.list;
             // map feito para entrar em cada objeto e montar name: value
             eventParameters = listParameter.map((p)=>{

@@ -13,6 +13,11 @@ javaScript
 
 npm install xlsx
 
-## A fazer
+## Atualizações
+CustomHtmlToSheets -> Está funcionando para alguns tipos de tag, e cria uma aba na plana para cada tio, ainda está me criação
 
-Inserir tratamento de dados parar userProperties
+GAToSheets -> Código para criar planilha para GA3
+
+googleAdsToSheets -> Código para criar planilha para Google Ads
+
+ToSheets -> Atualizei para novo formato do GA4 no json estraido
